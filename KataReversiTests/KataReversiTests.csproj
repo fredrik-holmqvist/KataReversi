@@ -58,6 +58,12 @@
       <LastGenOutput>Reversi.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KataReversi\KataReversi.csproj">
+      <Project>{D5E6325D-F7D2-404F-BB92-D2E1587BB36A}</Project>
+      <Name>KataReversi</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

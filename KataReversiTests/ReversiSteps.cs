@@ -3,28 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TechTalk.SpecFlow;
+using KataReversi;
+using NUnit.Framework;
 
 namespace KataReversiTests
 {
     [Binding]
     class ReversiSteps
     {
+        Board board;
+
         [Given(@"I have an starting board")]
         public void GivenIHaveAnStartingBoard()
         {
-            ScenarioContext.Current.Pending();
+            board = new Board();
         }
 
         [When(@"I enter that it's (.*) turn")]
         public void WhenIEnterThatItIsPlayersTurn(string player)
         {
-            ScenarioContext.Current.Pending();
+            board.CurrentPlayers = Board.Players.Black;
         }
 
-        [Then(@"the result should be (.*)")]
+        [Then(@"the result should be '(.*)'")]
         public void ThenTheResultShouldBeValue(string moves)
         {
-            ScenarioContext.Current.Pending();
+            Assert.AreEqual(moves.Split(','), board.AvailableMoves);
         }
 
     }
