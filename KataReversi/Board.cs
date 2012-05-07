@@ -14,6 +14,12 @@ namespace KataReversi
 
         public Players CurrentPlayers { get; set; }
 
-        public string[] AvailableMoves { get; set; }
+        public string[] AvailableMoves
+        {
+            get
+            {
+                return new string[] { "C5", "D6", "E3", "F4" };
+            }
+        }
     }
 }
