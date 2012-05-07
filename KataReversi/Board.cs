@@ -12,7 +12,7 @@ namespace KataReversi
             Black
         };
 
-        public Players CurrentPlayers { get; set; }
+        public Players CurrentPlayer { get; set; }
 
         public string[] AvailableMoves
         {

@@ -19,10 +19,16 @@ namespace KataReversiTests
             board = new Board();
         }
 
+        [Given(@"I have this board:")]
+        public void GivenIHaveThisBoard(Table table)
+        {
+            board = new Board();
+        }
+
         [When(@"I enter that it's (.*) turn")]
         public void WhenIEnterThatItIsPlayersTurn(string player)
         {
-            board.CurrentPlayers = Board.Players.Black;
+            board.CurrentPlayer = Board.Players.Black;
         }
 
         [Then(@"the result should be '(.*)'")]
