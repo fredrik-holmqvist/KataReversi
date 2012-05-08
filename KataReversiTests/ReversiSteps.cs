@@ -28,7 +28,15 @@ namespace KataReversiTests
         [When(@"I enter that it's (.*) turn")]
         public void WhenIEnterThatItIsPlayersTurn(string player)
         {
-            board.CurrentPlayer = Board.Players.Black;
+            switch (player)
+            {
+                case "blacks":
+                    board.CurrentPlayer = Board.Players.Black;
+                    break;
+                default:
+                    board.CurrentPlayer = Board.Players.White;
+                    break;
+            }
         }
 
         [Then(@"the result should be '(.*)'")]
