@@ -52,24 +52,10 @@ namespace KataReversi
             get
             {
                 var moves = new List<string>();
-                IEnumerable<Position> currentPlayer = null;
-                IEnumerable<Position> opposingPlayer = null;
 
-                switch (CurrentPlayer)
+                foreach (var currentPosition in GetCurrentPlayer())
                 {
-                    case Players.Black:
-                        currentPlayer = blackPositions;
-                        opposingPlayer = whitePositions;
-                        break;
-                    case Players.White:
-                        currentPlayer = whitePositions;
-                        opposingPlayer = blackPositions;
-                        break;
-                }
-
-                foreach (var currentPosition in currentPlayer)
-                {
-                    foreach (var move in FindMoves(currentPosition, currentPlayer, opposingPlayer))
+                    foreach (var move in FindMoves(currentPosition, GetCurrentPlayer(), GetOpposingPlayer()))
                     {
                         moves.Add(string.Format("{0}{1}", ReverseLookup(move.X), move.Y + 1));
                     }
@@ -79,6 +65,32 @@ namespace KataReversi
                 return moves;
             }
 
+        }
+
+        private IEnumerable<Position> GetOpposingPlayer()
+        {
+            switch (CurrentPlayer)
+            {
+                case Players.Black:
+                    return whitePositions;
+                case Players.White:
+                    return blackPositions;
+                default:
+                    return whitePositions;
+            }
+        }
+
+        private IEnumerable<Position> GetCurrentPlayer()
+        {
+            switch (CurrentPlayer)
+            {
+                case Players.Black:
+                    return blackPositions;
+                case Players.White:
+                    return whitePositions;
+                default:
+                    return blackPositions;
+            }
         }
 
         private IEnumerable<Position> FindMoves(Position currentPosition, IEnumerable<Position> currentPlayer, IEnumerable<Position> opposingPlayer)
