@@ -5,9 +5,11 @@
 
 @mytag
 Scenario: Starting position full check
-	Given I have an starting board
+	Given I have this board:
+	| black | white |
+	| E4,D5 | D4,E5 |
 	When I enter that it's blacks turn
-	Then the result should be 'C5,D6,E3,F4'
+	Then the result should be 'C4,D3,E6,F5'
 
 Scenario: First move white player
 	Given I have this board:
@@ -20,5 +22,5 @@ Scenario: Second move black player
 	Given I have this board:
 	| black | white |
 	| E4,D4,D3 | C5,D5,E5 |
-	When I enter that it's whites turn
+	When I enter that it's blacks turn
 	Then the result should be 'B6,D6,E6,F6'

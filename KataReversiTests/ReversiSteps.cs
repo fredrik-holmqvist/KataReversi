@@ -13,16 +13,11 @@ namespace KataReversiTests
     {
         Board board;
 
-        [Given(@"I have an starting board")]
-        public void GivenIHaveAnStartingBoard()
-        {
-            board = new Board();
-        }
-
         [Given(@"I have this board:")]
         public void GivenIHaveThisBoard(Table table)
         {
-            board = new Board();
+
+            board = new Board(table.Rows[0][0], table.Rows[0][1]);
         }
 
         [When(@"I enter that it's (.*) turn")]
@@ -42,7 +37,11 @@ namespace KataReversiTests
         [Then(@"the result should be '(.*)'")]
         public void ThenTheResultShouldBeValue(string moves)
         {
-            Assert.AreEqual(moves.Split(','), board.AvailableMoves);
+            var result = board.AvailableMoves.ToList();
+            foreach (var move in moves.Split(','))
+            {
+                Assert.Contains(move, result);
+            }
         }
 
     }
