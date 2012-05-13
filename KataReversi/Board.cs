@@ -7,6 +7,8 @@ namespace KataReversi
 {
     public class Board
     {
+        private const int A = 65;
+
 
         private class Position
         {
@@ -14,61 +16,29 @@ namespace KataReversi
             public int Y { get; set; }
         }
 
-        private int[,] _board;
-
         private IEnumerable<Position> blackPositions;
         private IEnumerable<Position> whitePositions;
 
-        Dictionary<char, int> lookup = new Dictionary<char, int>{ 
-            {'A',0},
-            {'B',1},
-            {'C',2},
-            {'D',3},
-            {'E',4},
-            {'F',5},
-            {'G',6},
-            {'H',7}};
-
-        Dictionary<int, char> reverseLookup = new Dictionary<int, char>{ 
-            {0,'A'},
-            {1,'B'},
-            {2,'C'},
-            {3,'D'},
-            {4,'E'},
-            {5,'F'},
-            {6,'G'},
-            {7,'H'}};
 
         public Board(string black, string white)
         {
-            blackPositions = from piece in black.Split(',')
-                             select new Position { X = lookup[piece[0]], Y = Convert.ToInt32(piece[1].ToString()) - 1 };
+            blackPositions = (from cord in black.Split(',')
+                              select new Position { X = Lookup(cord[0]), Y = Convert.ToInt32(cord[1].ToString()) - 1 }).ToList();
 
-            whitePositions = from piece in white.Split(',')
-                             select new Position { X = lookup[piece[0]], Y = Convert.ToInt32(piece[1].ToString()) - 1 };
+            whitePositions = (from cord in white.Split(',')
+                              select new Position { X = Lookup(cord[0]), Y = Convert.ToInt32(cord[1].ToString()) - 1 }).ToList();
 
-            //_board = new int[8, 8];
-
-            //for (int i = 0; i < 8; i++)
-
-            //    for (int j = 0; j < 8; j++)
-            //    {
-            //        if (blackPositions.Any(p => p.X == i && p.Y == j))
-            //        {
-            //            _board[i, j] = 1;
-            //        }
-            //        else if (whitePositions.Any(p => p.X == i && p.Y == j))
-            //        {
-            //            _board[i, j] = 2;
-            //        }
-            //        else
-            //        {
-            //            _board[i, j] = 0;
-            //        }
-            //    }
         }
 
+        private int Lookup(char letter)
+        {
+            return Convert.ToInt32(letter) - A;
+        }
 
+        private char ReverseLookup(int number)
+        {
+            return Convert.ToChar(number + A);
+        }
 
         public enum Players
         {
@@ -105,7 +75,7 @@ namespace KataReversi
                 {
                     foreach (var move in FindMoves(currentPosition, currentPlayer, opposingPlayer))
                     {
-                        moves.Add(string.Format("{0}{1}", reverseLookup[move.X], move.Y + 1));
+                        moves.Add(string.Format("{0}{1}", ReverseLookup(move.X), move.Y + 1));
                     }
 
                 }
