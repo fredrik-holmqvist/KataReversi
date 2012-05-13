@@ -51,20 +51,10 @@ namespace KataReversi
         {
             get
             {
-                var moves = new List<string>();
-
-                foreach (var currentPosition in GetCurrentPlayer())
-                {
-                    foreach (var move in FindMoves(currentPosition, GetCurrentPlayer(), GetOpposingPlayer()))
-                    {
-                        moves.Add(string.Format("{0}{1}", ReverseLookup(move.X), move.Y + 1));
-                    }
-
-                }
-
-                return moves;
+                return from currentPosition in GetCurrentPlayer()
+                       from move in FindMoves(currentPosition, GetCurrentPlayer(), GetOpposingPlayer())
+                       select string.Format("{0}{1}", ReverseLookup(move.X), move.Y + 1);
             }
-
         }
 
         private IEnumerable<Position> GetOpposingPlayer()
