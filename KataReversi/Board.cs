@@ -19,7 +19,6 @@ namespace KataReversi
         private IEnumerable<Position> blackPositions;
         private IEnumerable<Position> whitePositions;
 
-
         public Board(string black, string white)
         {
             blackPositions = (from cord in black.Split(',')
@@ -68,9 +67,6 @@ namespace KataReversi
                         break;
                 }
 
-
-
-
                 foreach (var currentPosition in currentPlayer)
                 {
                     foreach (var move in FindMoves(currentPosition, currentPlayer, opposingPlayer))
@@ -87,19 +83,10 @@ namespace KataReversi
 
         private IEnumerable<Position> FindMoves(Position currentPosition, IEnumerable<Position> currentPlayer, IEnumerable<Position> opposingPlayer)
         {
-            List<Position> result = new List<Position>();
-            var possibleDirections = FindPossibleDirections(currentPosition, opposingPlayer);
-
-            foreach (var direction in possibleDirections)
-            {
-                var pos = SearchDirection(currentPosition, direction, currentPlayer, opposingPlayer);
-                if (pos != null)
-                {
-                    result.Add(pos);
-                }
-            }
-
-            return result;
+            return from direction in FindPossibleDirections(currentPosition, opposingPlayer)
+                   let pos = SearchDirection(currentPosition, direction, currentPlayer, opposingPlayer)
+                   where pos != null
+                   select pos;
         }
 
         private Position SearchDirection(Position currentPosition, Position direction, IEnumerable<Position> currentPlayer, IEnumerable<Position> opposingPlayer)
@@ -130,12 +117,9 @@ namespace KataReversi
             {
                 for (int j = pos.Y - 1; j <= pos.Y + 1; j++)
                 {
-                    if (i >= 0 && i <= 7 && j >= 0 && j <= 7)
+                    if (opposingPlayer.Any(p => p.X == i && p.Y == j))
                     {
-                        if (opposingPlayer.Any(p => p.X == i && p.Y == j))
-                        {
-                            yield return new Position() { X = i - pos.X, Y = j - pos.Y };
-                        }
+                        yield return new Position() { X = i - pos.X, Y = j - pos.Y };
                     }
                 }
             }
