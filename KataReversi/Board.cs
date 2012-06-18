@@ -9,34 +9,22 @@ namespace KataReversi
     {
         private const int A = 65;
 
-
-        private class Position
+        private class Cordinate
         {
             public int X { get; set; }
             public int Y { get; set; }
         }
 
-        private IEnumerable<Position> blackPositions;
-        private IEnumerable<Position> whitePositions;
+        private IEnumerable<Cordinate> blackPositions;
+        private IEnumerable<Cordinate> whitePositions;
 
         public Board(string black, string white)
         {
             blackPositions = (from cord in black.Split(',')
-                              select new Position { X = Lookup(cord[0]), Y = Convert.ToInt32(cord[1].ToString()) - 1 }).ToList();
+                              select new Cordinate { X = Lookup(cord[0]), Y = Convert.ToInt32(cord[1].ToString()) - 1 }).ToList();
 
             whitePositions = (from cord in white.Split(',')
-                              select new Position { X = Lookup(cord[0]), Y = Convert.ToInt32(cord[1].ToString()) - 1 }).ToList();
-
-        }
-
-        private int Lookup(char letter)
-        {
-            return Convert.ToInt32(letter) - A;
-        }
-
-        private char ReverseLookup(int number)
-        {
-            return Convert.ToChar(number + A);
+                              select new Cordinate { X = Lookup(cord[0]), Y = Convert.ToInt32(cord[1].ToString()) - 1 }).ToList();
         }
 
         public enum Players
@@ -57,7 +45,17 @@ namespace KataReversi
             }
         }
 
-        private IEnumerable<Position> GetOpposingPlayer()
+        private int Lookup(char letter)
+        {
+            return Convert.ToInt32(letter) - A;
+        }
+
+        private char ReverseLookup(int number)
+        {
+            return Convert.ToChar(number + A);
+        }
+
+        private IEnumerable<Cordinate> GetOpposingPlayer()
         {
             switch (CurrentPlayer)
             {
@@ -70,7 +68,7 @@ namespace KataReversi
             }
         }
 
-        private IEnumerable<Position> GetCurrentPlayer()
+        private IEnumerable<Cordinate> GetCurrentPlayer()
         {
             switch (CurrentPlayer)
             {
@@ -83,7 +81,7 @@ namespace KataReversi
             }
         }
 
-        private IEnumerable<Position> FindMoves(Position currentPosition, IEnumerable<Position> currentPlayer, IEnumerable<Position> opposingPlayer)
+        private IEnumerable<Cordinate> FindMoves(Cordinate currentPosition, IEnumerable<Cordinate> currentPlayer, IEnumerable<Cordinate> opposingPlayer)
         {
             return from direction in FindPossibleDirections(currentPosition, opposingPlayer)
                    let pos = SearchDirection(currentPosition, direction, currentPlayer, opposingPlayer)
@@ -91,7 +89,7 @@ namespace KataReversi
                    select pos;
         }
 
-        private Position SearchDirection(Position currentPosition, Position direction, IEnumerable<Position> currentPlayer, IEnumerable<Position> opposingPlayer)
+        private Cordinate SearchDirection(Cordinate currentPosition, Cordinate direction, IEnumerable<Cordinate> currentPlayer, IEnumerable<Cordinate> opposingPlayer)
         {
             var currentX = currentPosition.X;
             var currentY = currentPosition.Y;
@@ -105,7 +103,7 @@ namespace KataReversi
                 {
                     if (!currentPlayer.Any(p => p.X == currentX && p.Y == currentY))
                     {
-                        return new Position() { X = currentX, Y = currentY };
+                        return new Cordinate() { X = currentX, Y = currentY };
                     }
                 }
             }
@@ -113,15 +111,15 @@ namespace KataReversi
             return null;
         }
 
-        private IEnumerable<Position> FindPossibleDirections(Position pos, IEnumerable<Position> opposingPlayer)
+        private IEnumerable<Cordinate> FindPossibleDirections(Cordinate pos, IEnumerable<Cordinate> opposingPlayer)
         {
-            for (int i = pos.X - 1; i <= pos.X + 1; i++)
+            for (int x = pos.X - 1; x <= pos.X + 1; x++)
             {
-                for (int j = pos.Y - 1; j <= pos.Y + 1; j++)
+                for (int y = pos.Y - 1; y <= pos.Y + 1; y++)
                 {
-                    if (opposingPlayer.Any(p => p.X == i && p.Y == j))
+                    if (opposingPlayer.Any(p => p.X == x && p.Y == y))
                     {
-                        yield return new Position() { X = i - pos.X, Y = j - pos.Y };
+                        yield return new Cordinate() { X = x - pos.X, Y = y - pos.Y };
                     }
                 }
             }
